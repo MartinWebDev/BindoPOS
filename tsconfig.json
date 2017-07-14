@@ -13,7 +13,7 @@
         "sourceMap": true,
         "removeComments": true,
         "typeRoots": [
-            "/types" // Folder root for custom types if required (will be required when I finish my definition file for SQLite)
+            "/types"
         ]
     },
     "exclude": [

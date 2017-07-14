@@ -8,10 +8,12 @@ import {
 // Import tabs
 import { HomeScreen } from './HomeScreen';
 import { ScannerScreen } from './ScannerScreen';
+import { AddProductScreen } from './Scanner/AddProductScreen';
 
 export const App: NavigationContainer = StackNavigator(
     {
         Home: { screen: HomeScreen },
-        Scanner: { screen: ScannerScreen }
+        Scanner: { screen: ScannerScreen },
+        AddProduct: { screen: AddProductScreen }
     }
 );
