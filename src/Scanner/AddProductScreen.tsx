@@ -14,6 +14,8 @@ import {
 import { NavigationScreenProp } from 'react-navigation';
 
 // Import data and services
+import { ProductService } from '../Services/ProductService';
+import { IProduct } from '../ClientData/IProduct';
 
 interface IProps {
     navigation: NavigationScreenProp<any, any>
@@ -23,6 +25,8 @@ interface IState {
     barcodeType: string;
     barcodeValue: string;
     productName: string;
+
+    prodSrv: ProductService;
 }
 
 export class AddProductScreen extends Component<IProps, IState> {
@@ -42,7 +46,8 @@ export class AddProductScreen extends Component<IProps, IState> {
         this.state = {
             barcodeValue: barcode,
             barcodeType: barcodeType,
-            productName: ""
+            productName: "",
+            prodSrv: new ProductService()
         };
     }
 
@@ -70,7 +75,13 @@ export class AddProductScreen extends Component<IProps, IState> {
                         style={styles.navigationButton}
                         onPress={
                             () => {
-                                this.props.navigation.navigate("ConfirmAddProduct");
+                                this.state.prodSrv.AddProductToStorage({
+                                    barcode: this.state.barcodeValue,
+                                    barcodeType: this.state.barcodeType,
+                                    productName: this.state.productName
+                                } as IProduct).then(() => {
+                                    this.props.navigation.navigate("Home");
+                                });
                             }
                         }
                     >

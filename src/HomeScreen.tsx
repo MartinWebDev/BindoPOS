@@ -114,7 +114,7 @@ export class HomeScreen extends Component<IProps, IState> {
 
                 <TouchableOpacity style={styles.navigationButton} onPress={
                     () => {
-                        alert("View scanned");
+                        this.props.navigation.navigate("ViewScannedProducts");
                     }
                 }>
                     <View style={styles.navigationButtonInner}>

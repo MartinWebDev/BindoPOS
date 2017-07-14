@@ -18,12 +18,15 @@ import { NavigationScreenProp } from 'react-navigation';
 // Import data and services
 import { ProductService } from './Services/ProductService';
 
+import { IProduct } from './ClientData/IProduct';
+
 interface IProps {
     navigation: NavigationScreenProp<any, any>
 }
 
 interface IState {
     prodSrv: ProductService;
+    products: IProduct[];
 }
 
 export class ScannedProductsScreen extends Component<IProps, IState> {
@@ -37,16 +40,23 @@ export class ScannedProductsScreen extends Component<IProps, IState> {
         super(props);
 
         this.state = {
-            prodSrv: new ProductService()
+            prodSrv: new ProductService(),
+            products: []
         };
     }
 
-    renderProductListEntry(row: any): JSX.Element {
+    componentDidMount() {
+        this.state.prodSrv.GetAllScannedProducts().then((products) => {
+            this.setState({ products: products });
+        });
+    }
+
+    renderProductListEntry(row: IProduct): JSX.Element {
         return (
             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                <Text></Text>
-                <Text></Text>
-                <Text></Text>
+                <Text>{row.barcodeType}</Text>
+                <Text>{row.barcode}</Text>
+                <Text>{row.productName}</Text>
             </View>
         );
     }
@@ -58,7 +68,7 @@ export class ScannedProductsScreen extends Component<IProps, IState> {
             <View style={styles.container}>
                 <ListView
                     enableEmptySections={true}
-                    dataSource={productDS}
+                    dataSource={productDS.cloneWithRows(this.state.products)}
                     renderRow={this.renderProductListEntry}
                 />
             </View>
