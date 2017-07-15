@@ -23,7 +23,6 @@ interface IProps {
 }
 
 interface IState {
-    db: BindoPosData;
     prodSrv: ProductService;
     itemsInMemory: number;
 }
@@ -44,7 +43,6 @@ export class HomeScreen extends Component<IProps, IState> {
         super(props);
 
         this.state = {
-            db: new BindoPosData(),
             prodSrv: new ProductService(),
             itemsInMemory: 0
         };
@@ -124,11 +122,25 @@ export class HomeScreen extends Component<IProps, IState> {
 
                 <TouchableOpacity style={styles.navigationButton} onPress={
                     () => {
-                        alert("Save scanned to DB");
+                        this.state.prodSrv.GetAllScannedProducts().then((result) => {
+                            this.state.prodSrv.AddProductsToDatabase(result).then(() => {
+                                debugger;
+                            });
+                        });
                     }
                 }>
                     <View style={styles.navigationButtonInner}>
                         <Text style={styles.navigationButtonText}>Save scanned to database</Text>
+                    </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.navigationButton} onPress={
+                    () => {
+                        this.props.navigation.navigate("SearchDatabase");
+                    }
+                }>
+                    <View style={styles.navigationButtonInner}>
+                        <Text style={styles.navigationButtonText}>Search Database</Text>
                     </View>
                 </TouchableOpacity>
             </View>

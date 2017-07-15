@@ -17,9 +17,19 @@ export class SQLiteWrapper {
         SQLite.enablePromise(true);
     }
 
-    openDatabase(dbName, dbLocation) {
-        SQLite.openDatabase({ name: dbName, createFromLocation: dbLocation }).then((db) => {
+    async openDatabase(dbName, dbLocation) {
+        return await SQLite.openDatabase({ name: dbName, createFromLocation: dbLocation }).then((db) => {
             this.db = db;
         });
+    }
+
+    async query(qs) {
+        return await this.db.executeSql(qs).then(([tx, results]) => {
+            return tx;
+        });
+    }
+
+    async closeDatabase() {
+        return await this.db.close();
     }
 }
